@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="9.10.001">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="9.10.001" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="read_excel" compatibility="9.10.001" expanded="true" height="68" name="Read Excel" width="90" x="45" y="85">
+        <parameter key="excel_file" value="C:\Users\manue\OneDrive\Documentos\Sistemas Inteligentes\setVal.xlsx"/>
+        <parameter key="sheet_selection" value="sheet number"/>
+        <parameter key="sheet_number" value="1"/>
+        <parameter key="imported_cell_range" value="A1"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="first_row_as_names" value="true"/>
+        <list key="annotations"/>
+        <parameter key="date_format" value=""/>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <parameter key="read_all_values_as_polynominal" value="false"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="date.true.date.attribute"/>
+          <parameter key="1" value="quarter.true.polynominal.attribute"/>
+          <parameter key="2" value="department.true.polynominal.attribute"/>
+          <parameter key="3" value="day.true.polynominal.attribute"/>
+          <parameter key="4" value="team.true.integer.attribute"/>
+          <parameter key="5" value="targeted_productivity.true.real.attribute"/>
+          <parameter key="6" value="smv.true.real.attribute"/>
+          <parameter key="7" value="wip.true.integer.attribute"/>
+          <parameter key="8" value="over_time.true.integer.attribute"/>
+          <parameter key="9" value="incentive.true.integer.attribute"/>
+          <parameter key="10" value="idle_time.true.real.attribute"/>
+          <parameter key="11" value="idle_men.true.integer.attribute"/>
+          <parameter key="12" value="no_of_style_change.true.integer.attribute"/>
+          <parameter key="13" value="no_of_workers.true.integer.attribute"/>
+          <parameter key="14" value="actual_productivity.true.real.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="false"/>
+      </operator>
+      <operator activated="true" class="optimize_parameters_evolutionary" compatibility="9.10.001" expanded="true" height="124" name="Optimize Parameters (Evolutionary)" width="90" x="313" y="136">
+        <list key="parameters">
+          <parameter key="Deep Learning.epsilon" value="[1e-10;1e-4]"/>
+          <parameter key="Deep Learning.rho" value="[0.9;0.999]"/>
+          <parameter key="Deep Learning.learning_rate" value="[0.0;1.0]"/>
+          <parameter key="Deep Learning.L1" value="[0.0;1.0]"/>
+          <parameter key="Deep Learning.L2" value="[0.0;1.0]"/>
+          <parameter key="Deep Learning.max_w2" value="[0.0;3.4028234663852886E38]"/>
+        </list>
+        <parameter key="error_handling" value="ignore error"/>
+        <parameter key="max_generations" value="50"/>
+        <parameter key="use_early_stopping" value="false"/>
+        <parameter key="generations_without_improval" value="2"/>
+        <parameter key="specify_population_size" value="true"/>
+        <parameter key="population_size" value="25"/>
+        <parameter key="keep_best" value="true"/>
+        <parameter key="mutation_type" value="gaussian_mutation"/>
+        <parameter key="selection_type" value="tournament"/>
+        <parameter key="tournament_fraction" value="0.25"/>
+        <parameter key="crossover_prob" value="0.5"/>
+        <parameter key="use_local_random_seed" value="true"/>
+        <parameter key="local_random_seed" value="100"/>
+        <parameter key="show_convergence_plot" value="true"/>
+        <process expanded="true">
+          <operator activated="true" class="set_role" compatibility="9.10.001" expanded="true" height="82" name="Set Role" width="90" x="112" y="136">
+            <parameter key="attribute_name" value="actual_productivity"/>
+            <parameter key="target_role" value="label"/>
+            <list key="set_additional_roles">
+              <parameter key="wip" value="regular"/>
+              <parameter key="incentive" value="regular"/>
+              <parameter key="no_of_workers" value="regular"/>
+              <parameter key="over_time" value="regular"/>
+              <parameter key="team" value="regular"/>
+              <parameter key="smv" value="regular"/>
+            </list>
+          </operator>
+          <operator activated="true" class="h2o:deep_learning" compatibility="9.10.001" expanded="true" height="103" name="Deep Learning" width="90" x="246" y="187">
+            <parameter key="activation" value="Rectifier"/>
+            <enumeration key="hidden_layer_sizes">
+              <parameter key="hidden_layer_sizes" value="7"/>
+              <parameter key="hidden_layer_sizes" value="7"/>
+            </enumeration>
+            <enumeration key="hidden_dropout_ratios"/>
+            <parameter key="reproducible_(uses_1_thread)" value="true"/>
+            <parameter key="use_local_random_seed" value="true"/>
+            <parameter key="local_random_seed" value="1992"/>
+            <parameter key="epochs" value="5.0"/>
+            <parameter key="compute_variable_importances" value="false"/>
+            <parameter key="train_samples_per_iteration" value="-2"/>
+            <parameter key="adaptive_rate" value="true"/>
+            <parameter key="epsilon" value="1.0E-10"/>
+            <parameter key="rho" value="0.999"/>
+            <parameter key="learning_rate" value="0.937894080968119"/>
+            <parameter key="learning_rate_annealing" value="0.382704232341221"/>
+            <parameter key="learning_rate_decay" value="0.1874777808724988"/>
+            <parameter key="momentum_start" value="0.0"/>
+            <parameter key="momentum_ramp" value="1000000.0"/>
+            <parameter key="momentum_stable" value="0.0"/>
+            <parameter key="nesterov_accelerated_gradient" value="true"/>
+            <parameter key="standardize" value="true"/>
+            <parameter key="L1" value="0.08810527479617182"/>
+            <parameter key="L2" value="0.6213095692213775"/>
+            <parameter key="max_w2" value="2.322132663586056E38"/>
+            <parameter key="loss_function" value="Automatic"/>
+            <parameter key="distribution_function" value="AUTO"/>
+            <parameter key="early_stopping" value="false"/>
+            <parameter key="stopping_rounds" value="1"/>
+            <parameter key="stopping_metric" value="AUTO"/>
+            <parameter key="stopping_tolerance" value="0.001"/>
+            <parameter key="missing_values_handling" value="MeanImputation"/>
+            <parameter key="max_runtime_seconds" value="0"/>
+            <list key="expert_parameters"/>
+            <list key="expert_parameters_"/>
+          </operator>
+          <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="380" y="187">
+            <list key="application_parameters"/>
+            <parameter key="create_view" value="false"/>
+          </operator>
+          <operator activated="true" class="performance_regression" compatibility="9.10.001" expanded="true" height="82" name="Performance" width="90" x="514" y="238">
+            <parameter key="main_criterion" value="root_mean_squared_error"/>
+            <parameter key="root_mean_squared_error" value="true"/>
+            <parameter key="absolute_error" value="true"/>
+            <parameter key="relative_error" value="true"/>
+            <parameter key="relative_error_lenient" value="false"/>
+            <parameter key="relative_error_strict" value="false"/>
+            <parameter key="normalized_absolute_error" value="false"/>
+            <parameter key="root_relative_squared_error" value="false"/>
+            <parameter key="squared_error" value="false"/>
+            <parameter key="correlation" value="false"/>
+            <parameter key="squared_correlation" value="false"/>
+            <parameter key="prediction_average" value="false"/>
+            <parameter key="spearman_rho" value="false"/>
+            <parameter key="kendall_tau" value="false"/>
+            <parameter key="skip_undefined_labels" value="true"/>
+            <parameter key="use_example_weights" value="true"/>
+          </operator>
+          <connect from_port="input 1" to_op="Set Role" to_port="example set input"/>
+          <connect from_op="Set Role" from_port="example set output" to_op="Deep Learning" to_port="training set"/>
+          <connect from_op="Deep Learning" from_port="model" to_op="Apply Model" to_port="model"/>
+          <connect from_op="Deep Learning" from_port="exampleSet" to_op="Apply Model" to_port="unlabelled data"/>
+          <connect from_op="Apply Model" from_port="labelled data" to_op="Performance" to_port="labelled data"/>
+          <connect from_op="Performance" from_port="performance" to_port="performance"/>
+          <portSpacing port="source_input 1" spacing="0"/>
+          <portSpacing port="source_input 2" spacing="0"/>
+          <portSpacing port="sink_performance" spacing="0"/>
+          <portSpacing port="sink_result 1" spacing="0"/>
+          <portSpacing port="sink_result 2" spacing="0"/>
+        </process>
+      </operator>
+      <connect from_op="Read Excel" from_port="output" to_op="Optimize Parameters (Evolutionary)" to_port="input 1"/>
+      <connect from_op="Optimize Parameters (Evolutionary)" from_port="performance" to_port="result 2"/>
+      <connect from_op="Optimize Parameters (Evolutionary)" from_port="parameter" to_port="result 3"/>
+      <connect from_op="Optimize Parameters (Evolutionary)" from_port="result 1" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+      <portSpacing port="sink_result 4" spacing="0"/>
+      <description align="center" color="yellow" colored="false" height="121" resized="false" width="180" x="344" y="381">Sparsity_mutation causes the mutated value to change from min to a random number between min and max or from any value unequal min to min.</description>
+      <description align="left" color="yellow" colored="false" height="139" resized="false" width="126" x="195" y="375">If you use switching mutation, each mutated value changes from min to max or from max to min.&lt;br&gt;</description>
+    </process>
+  </operator>
+</process>
