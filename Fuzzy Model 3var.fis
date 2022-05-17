@@ -1,0 +1,77 @@
+[System]
+Name='Fuzzy Model 3var'
+Type='mamdani'
+Version=2.0
+NumInputs=3
+NumOutputs=1
+NumRules=30
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='wip'
+Range=[413 1502]
+NumMFs=3
+MF1='Good':'gaussmf',[118.8 463.1]
+MF2='Regular':'gaussmf',[104.7 940.3]
+MF3='Bad':'gaussmf',[156.6 1501]
+
+[Input2]
+Name='overT'
+Range=[1920 10620]
+NumMFs=4
+MF1='Poor':'trimf',[-305.9 1966 4710]
+MF2='Regular':'trimf',[3120 4982 6890]
+MF3='Good':'trimf',[5601 7523 9445]
+MF4='Excellent':'trimf',[7719 10620 13370]
+
+[Input3]
+Name='NoW'
+Range=[29.5 60]
+NumMFs=3
+MF1='Bad':'gaussmf',[3.563 29.34]
+MF2='Regular':'gaussmf',[3.5474896717527 44.8]
+MF3='Good':'gaussmf',[3.28874279771147 60.1]
+
+[Output1]
+Name='PredictP'
+Range=[0 100]
+NumMFs=3
+MF1='Poor':'trapmf',[0 0 20.4 39.4]
+MF2='Regular':'trimf',[29.9 53 78.752642706131]
+MF3='Good':'trapmf',[69.8114164904863 82.6114164904863 100.211416490486 100.211416490486]
+
+[Rules]
+1 1 1, 2 (1) : 1
+1 2 2, 2 (1) : 1
+1 3 3, 3 (1) : 1
+2 1 1, 1 (1) : 1
+2 2 2, 2 (1) : 1
+2 3 3, 3 (1) : 1
+3 1 1, 1 (1) : 1
+3 2 2, 2 (1) : 1
+3 3 3, 3 (1) : 1
+2 1 2, 1 (1) : 1
+3 1 3, 2 (1) : 1
+1 2 1, 2 (1) : 1
+3 2 3, 2 (1) : 1
+1 3 1, 3 (1) : 1
+2 3 2, 3 (1) : 1
+2 2 1, 1 (1) : 1
+3 3 1, 2 (1) : 1
+1 1 2, 2 (1) : 1
+3 3 2, 3 (1) : 1
+1 1 3, 3 (1) : 1
+2 2 3, 3 (1) : 1
+1 4 1, 2 (1) : 1
+2 4 2, 2 (1) : 1
+3 4 3, 2 (1) : 1
+1 4 2, 3 (1) : 1
+1 4 3, 3 (1) : 1
+2 4 1, 2 (1) : 1
+2 4 3, 3 (1) : 1
+3 4 1, 1 (1) : 1
+3 4 2, 2 (1) : 1
